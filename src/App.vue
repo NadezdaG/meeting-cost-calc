@@ -1,8 +1,8 @@
 <script setup>
 import { ref, computed } from 'vue'
 const devs = ref(5)
-const pm = ref(5)
-const sm = ref(5)
+const pm = ref(3)
+const sm = ref(2)
 const time = ref(30)
 
 // prices per hour
@@ -36,7 +36,7 @@ const total = computed(() => {
     </label>
     <label for="time">
       Time in minutes:
-      <input type="number" min="0" max="240" v-model="time" />
+      <input type="number" min="0" max="2400" v-model="time" />
     </label>
   </div>
   <div class="total">
