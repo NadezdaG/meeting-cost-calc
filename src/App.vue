@@ -51,6 +51,7 @@ const start = () => {
 
 const stop = () => {
   clearInterval(timer.value)
+  timer.value = false
 }
 </script>
 
@@ -80,7 +81,7 @@ const stop = () => {
     <div>{{ formattedTime }}</div>
     <div>
       <button @click.prevent="start" :disabled="timer !== false">Start</button>
-      <button @click.prevent="stop" :disabled="timer !== true">Stop</button>
+      <button @click.prevent="stop" :disabled="timer == false">Stop</button>
     </div>
     <span class="price" v-html="total"></span>
   </div>
