@@ -3,6 +3,7 @@ import { ref, computed } from 'vue'
 const devs = ref(5)
 const pm = ref(3)
 const sm = ref(2)
+const ds = ref(0)
 const time = ref(0)
 const seconds = ref(0)
 // prices per hour
@@ -19,6 +20,10 @@ const fees = ref({
     name: 'Scrum Master / Project Manager',
     price: 60,
   },
+  ds: {
+    name: 'Designers',
+    price: 100,
+  },
 })
 
 let timer = ref(false)
@@ -29,7 +34,8 @@ const total = computed(() => {
     ((time.value + seconds.value / 60) / 60) *
     (devs.value * fees.value.devs.price +
       pm.value * fees.value.pm.price +
-      sm.value * fees.value.sm.price)
+      sm.value * fees.value.sm.price +
+      ds.value * fees.value.ds.price)
   return '£' + value.toFixed(2)
 })
 
@@ -70,6 +76,10 @@ const stop = () => {
       <strong>{{ fees.sm.name }}:</strong>
       <input type="number" min="0" max="10" v-model="sm" />
     </label>
+    <label for="ds">
+      <strong>{{ fees.ds.name }}:</strong>
+      <input type="number" min="0" max="10" v-model="ds" />
+    </label>
     <label for="time">
       <strong
         >Time in minutes:<span><br />* put starting time, or leave 0</span></strong
@@ -101,6 +111,10 @@ const stop = () => {
     <label for="pm-hourly">
       <strong>{{ fees.pm.name }}</strong> Hourly Rate:
       <input type="number" id="pm-hourly" size="3" min="0" max="1000" v-model="fees.pm.price" />
+    </label>
+    <label for="ds-hourly">
+      <strong>{{ fees.ds.name }}</strong> Hourly Rate:
+      <input type="number" id="ds-hourly" size="3" min="0" max="1000" v-model="fees.ds.price" />
     </label>
   </div>
 </template>
@@ -152,8 +166,8 @@ h1 {
 .note {
   grid-area: note;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-areas: 'text text text' '. . .';
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-areas: 'text text text text' '. . . .';
   font-size: var(--font-size-xs);
   gap: var(--space-xs);
   border-top: 1px dashed var(--border-color);
