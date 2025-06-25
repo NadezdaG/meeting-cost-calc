@@ -1,120 +1,74 @@
 <script setup>
-import { ref, computed } from 'vue'
-const devs = ref(5)
-const pm = ref(3)
-const sm = ref(2)
-const ds = ref(0)
-const time = ref(0)
-const seconds = ref(0)
+import { ref, computed, reactive } from 'vue'
+
+import MeetingData from './components/MeetingData.vue'
+import Timer from './components/Timer.vue'
+
+const milliseconds = ref(0)
 // prices per hour
-const fees = ref({
+const data = reactive({
   devs: {
     name: 'Developers',
     price: 50,
+    amount: 2,
   },
   pm: {
     name: 'Platform Managers / Brand people',
     price: 80,
+    amount: 2,
   },
   sm: {
     name: 'Scrum Master / Project Manager',
     price: 60,
+    amount: 1,
   },
   ds: {
     name: 'Designers',
     price: 100,
+    amount: 1,
   },
 })
 
-let timer = ref(false)
-
-// computed value
-const total = computed(() => {
-  var value =
-    ((time.value + seconds.value / 60) / 60) *
-    (devs.value * fees.value.devs.price +
-      pm.value * fees.value.pm.price +
-      sm.value * fees.value.sm.price +
-      ds.value * fees.value.ds.price)
-  return '£' + value.toFixed(2)
-})
-
-const formattedTime = computed(() => {
-  const pad = (n) => String(n).padStart(2, '0')
-  return `${pad(time.value)}:${pad(seconds.value)}`
-})
-
-const start = () => {
-  // increase time value by 1 every minute
-  timer.value = setInterval(() => {
-    seconds.value++
-    if (seconds.value >= 60) {
-      time.value++
-      seconds.value = 0
-    }
-  }, 1000)
+const updateData = (line, key, val) => {
+  console.log('updateData', line, key, val)
+  data[line][key] = val
 }
 
-const stop = () => {
-  clearInterval(timer.value)
-  timer.value = false
+const updateMs = (value) => {
+  console.log('updateMs', value)
+  milliseconds.value = value
 }
 </script>
 
 <template>
   <h1>Meeting Cost Calculator ;)</h1>
-  <div class="calc">
-    <label for="devs">
-      <strong>{{ fees.devs.name }}:</strong>
-      <input type="number" min="0" max="10" v-model="devs" />
-    </label>
-    <label for="pm">
-      <strong>{{ fees.pm.name }}:</strong>
-      <input type="number" min="0" max="10" v-model="pm" />
-    </label>
-    <label for="sm">
-      <strong>{{ fees.sm.name }}:</strong>
-      <input type="number" min="0" max="10" v-model="sm" />
-    </label>
-    <label for="ds">
-      <strong>{{ fees.ds.name }}:</strong>
-      <input type="number" min="0" max="10" v-model="ds" />
-    </label>
-    <label for="time">
-      <strong
-        >Time in minutes:<span><br />* put starting time, or leave 0</span></strong
-      >
-      <input type="number" min="0" max="2400" v-model="time" />
-    </label>
-  </div>
-  <div class="total">
-    <div>{{ formattedTime }}</div>
-    <div>
-      <button @click.prevent="start" :disabled="timer !== false">Start</button>
-      <button @click.prevent="stop" :disabled="timer == false">Stop</button>
-    </div>
-    <span class="price" v-html="total"></span>
-  </div>
+  <MeetingData
+    :data="data"
+    :milliseconds="milliseconds"
+    @updateMs="updateMs"
+    @updateData="updateData"
+  />
+  <Timer :data="data" :milliseconds="milliseconds" @updateMs="updateMs" />
   <div class="note">
     <p>
       * The hourly rates are set to average UK values in GBP. You can change them to your own
       values.
     </p>
     <label for="devs-hourly">
-      <strong>{{ fees.devs.name }}</strong> Hourly Rate:
-      <input type="number" id="devs-hourly" size="3" min="0" max="1000" v-model="fees.devs.price" />
+      <strong>{{ data.devs.name }}</strong> Hourly Rate:
+      <input type="number" id="devs-hourly" size="3" min="0" max="1000" v-model="data.devs.price" />
     </label>
     <label for="sm-hourly">
-      <strong>{{ fees.sm.name }}</strong> Hourly Rate:
-      <input type="number" id="sm-hourly" size="3" min="0" max="1000" v-model="fees.sm.price" />
+      <strong>{{ data.sm.name }}</strong> Hourly Rate:
+      <input type="number" id="sm-hourly" size="3" min="0" max="1000" v-model="data.sm.price" />
     </label>
     <label for="pm-hourly">
-      <strong>{{ fees.pm.name }}</strong> Hourly Rate:
-      <input type="number" id="pm-hourly" size="3" min="0" max="1000" v-model="fees.pm.price" />
+      <strong>{{ data.pm.name }}</strong> Hourly Rate:
+      <input type="number" id="pm-hourly" size="3" min="0" max="1000" v-model="data.pm.price" />
     </label>
     <label for="ds-hourly">
-      <strong>{{ fees.ds.name }}</strong> Hourly Rate:
-      <input type="number" id="ds-hourly" size="3" min="0" max="1000" v-model="fees.ds.price" />
+      <strong>{{ data.ds.name }}</strong> Hourly Rate:
+      <input type="number" id="ds-hourly" size="3" min="0" max="1000" v-model="data.ds.price" />
     </label>
   </div>
 </template>
@@ -135,33 +89,6 @@ const stop = () => {
 <style scoped lang="scss">
 h1 {
   grid-area: title;
-}
-.calc {
-  grid-area: settings;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-xs);
-  label {
-    display: grid;
-    font-size: var(--font-size-sm);
-    grid-template-columns: 2fr 1fr;
-    gap: var(--space-xs);
-    align-items: start;
-  }
-}
-.total {
-  grid-area: total;
-  font-size: var(--font-size-lg);
-  background-color: var(--bg-accent);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-xs);
-  justify-content: center;
-  align-items: center;
-  .price {
-    font-weight: 700;
-    font-size: var(--font-size-xxl);
-  }
 }
 .note {
   grid-area: note;
