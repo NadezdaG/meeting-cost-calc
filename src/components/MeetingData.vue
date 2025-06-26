@@ -11,7 +11,11 @@
       />
     </label>
     <label>
-      <strong>Time in minutes:<br /><span>* start time or leave 0</span></strong>
+      <strong
+        >Time in minutes:<br /><span class="small"
+          >* time already spent in meeting, or leave 0</span
+        ></strong
+      >
       <input type="number" min="0" max="2400" :value="minutes" @input="handleUpdateMs" />
     </label>
   </section>

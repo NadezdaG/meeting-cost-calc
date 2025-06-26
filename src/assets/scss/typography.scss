@@ -1,6 +1,6 @@
 h1 {
   font-size: var(--font-size-xxl);
-  margin-bottom: 1rem;
+  margin-bottom: 0;
 }
 
 h2 {
@@ -19,17 +19,20 @@ strong {
     font-weight: 400;
   }
 }
-small {
-  font-size: var(--font-size-sm);
+small,
+.small {
+  font-size: var(--font-size-xs);
 }
 
 a {
   color: var(--text-link);
   font-size: var(--font-size-md);
-  text-decoration: none;
+  text-decoration: underline;
+  transition: color 0.3s ease;
+  font-weight: 600;
+  cursor: pointer;
 }
 
 a:hover {
   color: var(--text-link-hover);
-  background-color: var(--bg-link-hover);
 }

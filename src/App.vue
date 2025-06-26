@@ -6,6 +6,7 @@ import Timer from './components/Timer.vue'
 import FeeChange from './components/FeeChange.vue'
 
 const milliseconds = ref(0)
+const changeFees = ref(false)
 // prices per hour
 const data = reactive({
   devs: {
@@ -53,10 +54,10 @@ const updateMs = (value) => {
     <Timer :data="data" :milliseconds="milliseconds" @updateMs="updateMs" />
     <div class="note">
       <p>
-        * The hourly rates are set to average UK values in GBP. You can change them to your own
-        values.
+        * The hourly rates are set to average UK values in GBP. You can
+        <a @click.prevent="changeFees = !changeFees">change them</a> to your own values.
       </p>
-      <FeeChange :data="data" @updateData="updateData" />
+      <FeeChange :data="data" @updateData="updateData" v-if="changeFees" />
     </div>
   </div>
   <footer>
@@ -81,17 +82,14 @@ const updateMs = (value) => {
   display: grid;
   gap: var(--space-md);
   grid-template-columns: 1fr;
-  grid-template-areas: 'title' 'total' 'settings' 'note';
+  grid-template-areas: 'total' 'settings' 'note';
   @media (min-width: 1024px) {
     grid-template-columns: 1fr 1fr;
-    grid-template-areas: 'title title' 'settings total' 'note note';
+    grid-template-areas: 'settings total' 'note note';
   }
 }
 .timer-block {
   grid-area: total;
-}
-h1 {
-  grid-area: title;
 }
 .meeting-data {
   grid-area: settings;
@@ -100,8 +98,8 @@ h1 {
   grid-area: note;
   display: grid;
   font-size: var(--font-size-xs);
-  border-top: 1px dashed var(--border-color);
-  margin-top: var(--space-sm);
-  padding-top: var(--space-sm);
+}
+footer {
+  text-align: center;
 }
 </style>
