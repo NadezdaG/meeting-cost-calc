@@ -1,0 +1,27 @@
+input {
+  font-size: var(--font-size-md);
+  padding: var(--space-sm);
+  border: none;
+  background-color: var(--bg-secondary);
+  border-radius: 25px;
+  margin-bottom: var(--space-md);
+}
+
+button {
+  font-size: var(--font-size-md);
+  padding: var(--space-sm);
+  background-color: var(--bg-button);
+  color: var(--text-button);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+button:hover {
+  background-color: var(--bg-button-hover);
+  color: var(--text-button);
+}
+button:disabled {
+  background-color: var(--bg-button-disabled);
+  color: var(--text-button-disabled);
+  cursor: not-allowed;
+}

@@ -1,5 +1,5 @@
 <template>
-  <div class="meeting-data">
+  <section class="meeting-data">
     <label v-for="(role, key) in data" :key="key">
       <strong>{{ role.name }}:</strong>
       <input
@@ -14,7 +14,7 @@
       <strong>Time in minutes:<br /><span>* start time or leave 0</span></strong>
       <input type="number" min="0" max="2400" :value="minutes" @input="handleUpdateMs" />
     </label>
-  </div>
+  </section>
 </template>
 
 <script setup>
@@ -38,17 +38,17 @@ const handleUpdateMs = (e) => {
 </script>
 
 <style scoped lang="scss">
-.meeting-data {
-  grid-area: settings;
+section {
   display: flex;
   flex-direction: column;
   gap: var(--space-xs);
-  label {
-    display: grid;
-    font-size: var(--font-size-sm);
-    grid-template-columns: 2fr 1fr;
-    gap: var(--space-xs);
-    align-items: start;
-  }
+}
+
+label {
+  display: grid;
+  font-size: var(--font-size-sm);
+  grid-template-columns: 2fr 1fr;
+  gap: var(--space-xs);
+  align-items: start;
 }
 </style>

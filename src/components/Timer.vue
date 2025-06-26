@@ -1,12 +1,12 @@
 <template>
-  <div class="timer-block">
+  <section class="timer-block">
     <div class="timer" v-html="formattedTime"></div>
     <div>
       <button @click.prevent="start" :disabled="timer !== false">Start</button>
       <button @click.prevent="stop" :disabled="timer == false">Stop</button>
     </div>
     <span class="price" v-html="total"></span>
-  </div>
+  </section>
 </template>
 
 <script setup>
@@ -60,8 +60,7 @@ const stop = () => {
 </script>
 
 <style scoped lang="scss">
-.timer-block {
-  grid-area: total;
+section {
   font-size: var(--font-size-lg);
   background-color: var(--bg-accent);
   display: flex;
@@ -69,10 +68,11 @@ const stop = () => {
   gap: var(--space-xs);
   justify-content: center;
   align-items: center;
-  .price {
-    font-weight: 700;
-    font-size: var(--font-size-xxl);
-  }
+}
+
+.price {
+  font-weight: 700;
+  font-size: var(--font-size-xxl);
 }
 
 .timer {
